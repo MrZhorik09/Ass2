@@ -1,0 +1,227 @@
+{
+  "meta": {
+    "run_at": "2026-10-02T19:17:54",
+    "source": "fault_tolerant_processor.py",
+    "commit": "871f0e6",
+    "python": "3.11.15"
+  },
+  "A": {
+    "attempted": 2,
+    "successful": 1,
+    "lost": 14,
+    "processed_amount": 12000,
+    "lost_amount": 425000,
+    "stopped_at": "T002",
+    "crash": "Network fault during Process for T002 (Initial)"
+  },
+  "B": {
+    "rows": [
+      {
+        "transaction": "T002",
+        "failure": "Network",
+        "exception": "NetworkFault",
+        "stage": "Process",
+        "recovery_action": "Caught, classified, logged; transaction skipped; continue",
+        "final_status": "FAILED"
+      },
+      {
+        "transaction": "T004",
+        "failure": "Timeout",
+        "exception": "TimeoutFault",
+        "stage": "Process",
+        "recovery_action": "Caught, classified, logged; transaction skipped; continue",
+        "final_status": "FAILED"
+      },
+      {
+        "transaction": "T006",
+        "failure": "Database",
+        "exception": "DatabaseFault",
+        "stage": "Record",
+        "recovery_action": "Caught, classified, logged; transaction skipped; continue",
+        "final_status": "FAILED"
+      },
+      {
+        "transaction": "T008",
+        "failure": "Network",
+        "exception": "NetworkFault",
+        "stage": "Process",
+        "recovery_action": "Caught, classified, logged; transaction skipped; continue",
+        "final_status": "FAILED"
+      },
+      {
+        "transaction": "T010",
+        "failure": "Timeout",
+        "exception": "TimeoutFault",
+        "stage": "Process",
+        "recovery_action": "Caught, classified, logged; transaction skipped; continue",
+        "final_status": "FAILED"
+      },
+      {
+        "transaction": "T012",
+        "failure": "Database",
+        "exception": "DatabaseFault",
+        "stage": "Record",
+        "recovery_action": "Caught, classified, logged; transaction skipped; continue",
+        "final_status": "FAILED"
+      },
+      {
+        "transaction": "T015",
+        "failure": "Network",
+        "exception": "NetworkFault",
+        "stage": "Process",
+        "recovery_action": "Caught, classified, logged; transaction skipped; continue",
+        "final_status": "FAILED"
+      }
+    ],
+    "successful": 8,
+    "failed": 7,
+    "confirmed_amount": 96000,
+    "ledger_total_without_rollback": 246000,
+    "dirty_rows": [
+      "T006",
+      "T012"
+    ]
+  },
+  "C": {
+    "successful": 13,
+    "failed": 2,
+    "processed_amount": 287000,
+    "lost_amount": 150000,
+    "retries": 11,
+    "rollbacks": 2,
+    "duplicate_writes_suppressed": 4,
+    "attempts": 26,
+    "statuses": {
+      "T001": "SUCCESS",
+      "T002": "SUCCESS",
+      "T003": "SUCCESS",
+      "T004": "SUCCESS",
+      "T005": "SUCCESS",
+      "T006": "ROLLED_BACK",
+      "T007": "SUCCESS",
+      "T008": "SUCCESS",
+      "T009": "SUCCESS",
+      "T010": "SUCCESS",
+      "T011": "SUCCESS",
+      "T012": "ROLLED_BACK",
+      "T013": "SUCCESS",
+      "T014": "SUCCESS",
+      "T015": "SUCCESS"
+    },
+    "checkpoints": []
+  },
+  "D": {
+    "successful": 13,
+    "failed": 2,
+    "processed_amount": 287000,
+    "lost_amount": 150000,
+    "retries": 11,
+    "rollbacks": 2,
+    "duplicate_writes_suppressed": 4,
+    "attempts": 26,
+    "statuses": {
+      "T001": "SUCCESS",
+      "T002": "SUCCESS",
+      "T003": "SUCCESS",
+      "T004": "SUCCESS",
+      "T005": "SUCCESS",
+      "T006": "ROLLED_BACK",
+      "T007": "SUCCESS",
+      "T008": "SUCCESS",
+      "T009": "SUCCESS",
+      "T010": "SUCCESS",
+      "T011": "SUCCESS",
+      "T012": "ROLLED_BACK",
+      "T013": "SUCCESS",
+      "T014": "SUCCESS",
+      "T015": "SUCCESS"
+    },
+    "checkpoints": [
+      {
+        "label": "CP1",
+        "kind": "periodic",
+        "created_at": "2026-10-02T19:17:54.285",
+        "count": 5,
+        "total": 103000,
+        "last_txn": "T005",
+        "file": "output/checkpoints/CP1.json",
+        "txns": [
+          "T001",
+          "T002",
+          "T003",
+          "T004",
+          "T005"
+        ]
+      },
+      {
+        "label": "CP2",
+        "kind": "periodic",
+        "created_at": "2026-10-02T19:17:54.358",
+        "count": 10,
+        "total": 214000,
+        "last_txn": "T011",
+        "file": "output/checkpoints/CP2.json",
+        "txns": [
+          "T001",
+          "T002",
+          "T003",
+          "T004",
+          "T005",
+          "T007",
+          "T008",
+          "T009",
+          "T010",
+          "T011"
+        ]
+      },
+      {
+        "label": "CP3",
+        "kind": "final (end of batch)",
+        "created_at": "2026-10-02T19:17:54.400",
+        "count": 13,
+        "total": 287000,
+        "last_txn": "T015",
+        "file": "output/checkpoints/CP3.json",
+        "txns": [
+          "T001",
+          "T002",
+          "T003",
+          "T004",
+          "T005",
+          "T007",
+          "T008",
+          "T009",
+          "T010",
+          "T011",
+          "T013",
+          "T014",
+          "T015"
+        ]
+      }
+    ]
+  },
+  "E": {
+    "baseline": {
+      "successful": 1,
+      "failed": 14,
+      "lost_amount": 425000,
+      "retries": 0,
+      "rollbacks": 0,
+      "completion_rate": 0.06666666666666667
+    },
+    "fault_tolerant": {
+      "successful": 13,
+      "failed": 2,
+      "lost_amount": 150000,
+      "retries": 11,
+      "rollbacks": 2,
+      "completion_rate": 0.8666666666666667
+    },
+    "recovery_improvement_pp": 0.8,
+    "txn_loss_reduction": 0.8571428571428571,
+    "amount_loss_reduction": 0.6470588235294118,
+    "faults_total": 7,
+    "recovered_by_retry": 5,
+    "retry_recovery_rate": 0.7142857142857143
+  }
+}

@@ -1,0 +1,27 @@
+step,timestamp,transaction,attempt,failure,action,result
+1,2026-10-02T19:17:54.244,T001,Initial,None,Validate->Process->Record committed,SUCCESS
+2,2026-10-02T19:17:54.244,T002,Initial,Network,"NetworkFault in Process; backoff 0.01s, retry",FAIL
+3,2026-10-02T19:17:54.254,T002,Retry 1,None,Validate->Process->Record committed,SUCCESS
+4,2026-10-02T19:17:54.254,T003,Initial,None,Validate->Process->Record committed,SUCCESS
+5,2026-10-02T19:17:54.254,T004,Initial,Timeout,"TimeoutFault in Process; backoff 0.01s, retry",FAIL
+6,2026-10-02T19:17:54.265,T004,Retry 1,Timeout,"TimeoutFault in Process; backoff 0.02s, retry",FAIL
+7,2026-10-02T19:17:54.285,T004,Retry 2,None,Validate->Process->Record committed,SUCCESS
+8,2026-10-02T19:17:54.285,T005,Initial,None,Validate->Process->Record committed,SUCCESS
+9,2026-10-02T19:17:54.285,T006,Initial,Database,"DatabaseFault in Record; backoff 0.01s, retry",FAIL
+10,2026-10-02T19:17:54.296,T006,Retry 1,Database,"DatabaseFault in Record; backoff 0.02s, retry",FAIL
+11,2026-10-02T19:17:54.316,T006,Retry 2,Database,Retries exhausted; ROLLBACK to CP1,ROLLBACK
+12,2026-10-02T19:17:54.316,T007,Initial,None,Validate->Process->Record committed,SUCCESS
+13,2026-10-02T19:17:54.316,T008,Initial,Network,"NetworkFault in Process; backoff 0.01s, retry",FAIL
+14,2026-10-02T19:17:54.326,T008,Retry 1,None,Validate->Process->Record committed,SUCCESS
+15,2026-10-02T19:17:54.327,T009,Initial,None,Validate->Process->Record committed,SUCCESS
+16,2026-10-02T19:17:54.327,T010,Initial,Timeout,"TimeoutFault in Process; backoff 0.01s, retry",FAIL
+17,2026-10-02T19:17:54.337,T010,Retry 1,Timeout,"TimeoutFault in Process; backoff 0.02s, retry",FAIL
+18,2026-10-02T19:17:54.357,T010,Retry 2,None,Validate->Process->Record committed,SUCCESS
+19,2026-10-02T19:17:54.357,T011,Initial,None,Validate->Process->Record committed,SUCCESS
+20,2026-10-02T19:17:54.358,T012,Initial,Database,"DatabaseFault in Record; backoff 0.01s, retry",FAIL
+21,2026-10-02T19:17:54.368,T012,Retry 1,Database,"DatabaseFault in Record; backoff 0.02s, retry",FAIL
+22,2026-10-02T19:17:54.389,T012,Retry 2,Database,Retries exhausted; ROLLBACK to CP2,ROLLBACK
+23,2026-10-02T19:17:54.389,T013,Initial,None,Validate->Process->Record committed,SUCCESS
+24,2026-10-02T19:17:54.389,T014,Initial,None,Validate->Process->Record committed,SUCCESS
+25,2026-10-02T19:17:54.389,T015,Initial,Network,"NetworkFault in Process; backoff 0.01s, retry",FAIL
+26,2026-10-02T19:17:54.400,T015,Retry 1,None,Validate->Process->Record committed,SUCCESS

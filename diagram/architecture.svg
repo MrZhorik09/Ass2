@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 650" width="1200" height="650" font-family="Arial, Helvetica, sans-serif">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#444"/></marker>
+    <marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#C0392B"/></marker>
+    <marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1E8449"/></marker>
+    <marker id="b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2E5395"/></marker>
+    <style>
+      .box{fill:#fff;stroke:#555;stroke-width:1.5}
+      .pipe{fill:#EAF1FB;stroke:#2E5395;stroke-width:1.5}
+      .fault{fill:#FDEDEC;stroke:#C0392B;stroke-width:1.5}
+      .ok{fill:#E9F7EF;stroke:#1E8449;stroke-width:1.5}
+      .t{font-size:15px;font-weight:bold;fill:#222;text-anchor:middle}
+      .s{font-size:12px;fill:#444;text-anchor:middle}
+      .code{font-family:Consolas,monospace;font-size:11.5px;fill:#444;text-anchor:middle}
+      .lbl{font-size:12px;fill:#444}
+      .lr{font-size:12px;fill:#C0392B}
+      .lg{font-size:12px;fill:#1E8449}
+      .ln{stroke:#444;stroke-width:1.6;fill:none}
+      .lnr{stroke:#C0392B;stroke-width:1.6;fill:none;stroke-dasharray:6 4}
+      .lng{stroke:#1E8449;stroke-width:1.6;fill:none}
+      .lnb{stroke:#2E5395;stroke-width:1.6;fill:none;stroke-dasharray:6 4}
+    </style>
+  </defs>
+
+  <!-- pipeline frame -->
+  <rect x="228" y="18" width="964" height="116" rx="10" fill="none" stroke="#2E5395" stroke-width="1" stroke-dasharray="4 4"/>
+  <text x="240" y="34" class="lbl" fill="#2E5395" style="fill:#2E5395;font-weight:bold">PaymentService.execute(txn, attempt) - one attempt</text>
+
+  <!-- Row A -->
+  <rect x="20" y="50" width="180" height="70" rx="8" class="box"/>
+  <text x="110" y="78" class="t">Input batch</text>
+  <text x="110" y="97" class="s">T001–T015 (437 000 KZT)</text>
+  <text x="110" y="112" class="code">FAULT_RULES</text>
+
+  <rect x="240" y="50" width="180" height="70" rx="8" class="pipe"/>
+  <text x="330" y="80" class="t">1. Validate</text>
+  <text x="330" y="100" class="s">amount &gt; 0, id format</text>
+
+  <rect x="460" y="50" width="220" height="70" rx="8" class="pipe"/>
+  <text x="570" y="78" class="t">2. Process</text>
+  <text x="570" y="96" class="s">payment gateway call</text>
+  <text x="570" y="112" class="s" style="fill:#C0392B">⚡ Network / Timeout injected</text>
+
+  <rect x="720" y="50" width="200" height="70" rx="8" class="pipe"/>
+  <text x="820" y="78" class="t">Ledger.record()</text>
+  <text x="820" y="96" class="s">idempotent write</text>
+  <text x="820" y="112" class="code">key = txn_id</text>
+
+  <rect x="950" y="50" width="230" height="70" rx="8" class="pipe"/>
+  <text x="1065" y="78" class="t">3. Record (DB commit)</text>
+  <text x="1065" y="96" class="s">after the row is written</text>
+  <text x="1065" y="112" class="s" style="fill:#C0392B">⚡ Database fault injected</text>
+
+  <path d="M200 85H236" class="ln" marker-end="url(#a)"/>
+  <path d="M420 85H456" class="ln" marker-end="url(#a)"/>
+  <path d="M680 85H716" class="ln" marker-end="url(#a)"/>
+  <path d="M920 85H946" class="ln" marker-end="url(#a)"/>
+
+  <!-- Row B -->
+  <rect x="470" y="190" width="410" height="70" rx="8" class="fault"/>
+  <text x="675" y="216" class="t">except TransactionFault → classify</text>
+  <text x="675" y="236" class="code">NetworkFault · TimeoutFault · DatabaseFault</text>
+  <text x="675" y="252" class="s">logged as JSON (level WARNING/ERROR)</text>
+
+  <rect x="1000" y="190" width="180" height="70" rx="8" class="ok"/>
+  <text x="1090" y="216" class="t">SUCCESS</text>
+  <text x="1090" y="235" class="code">journal.commit(txn)</text>
+  <text x="1090" y="251" class="code">successes += 1</text>
+
+  <path d="M570 120V186" class="lnr" marker-end="url(#r)"/>
+  <text x="580" y="160" class="lr">Network / Timeout</text>
+  <path d="M965 120V225H884" class="lnr" marker-end="url(#r)"/>
+  <text x="890" y="216" class="lr">Database</text>
+  <path d="M1090 120V186" class="lng" marker-end="url(#g)"/>
+  <text x="1098" y="160" class="lg">committed</text>
+
+  <!-- Row C -->
+  <rect x="240" y="320" width="180" height="70" rx="8" class="box"/>
+  <text x="330" y="346" class="t">Backoff</text>
+  <text x="330" y="365" class="code">sleep(0.01 · 2ⁿ)</text>
+  <text x="330" y="381" class="s">then attempt + 1</text>
+
+  <path d="M675 318L850 355L675 392L500 355Z" class="box"/>
+  <text x="675" y="350" class="t" style="font-size:14px">retryable and</text>
+  <text x="675" y="368" class="code" style="font-size:12px">attempt &lt; MAX_RETRIES (2)?</text>
+
+  <rect x="1000" y="320" width="180" height="70" rx="8" class="box"/>
+  <text x="1090" y="346" class="t">5th success?</text>
+  <text x="1090" y="365" class="code">since_cp == 5</text>
+  <text x="1090" y="381" class="s">(+ final CP at end)</text>
+
+  <path d="M675 260V316" class="ln" marker-end="url(#a)"/>
+  <path d="M500 355H424" class="ln" marker-end="url(#a)"/>
+  <text x="440" y="347" class="lbl">yes</text>
+  <path d="M330 320V124" class="ln" marker-end="url(#a)"/>
+  <text x="338" y="200" class="lbl">retry</text>
+  <text x="338" y="215" class="s" style="text-anchor:start">Network: 1 · Timeout: 2</text>
+  <path d="M1090 260V316" class="lng" marker-end="url(#g)"/>
+
+  <!-- Row D -->
+  <rect x="20" y="460" width="180" height="70" rx="8" class="box"/>
+  <text x="110" y="490" class="t">Next transaction</text>
+  <text x="110" y="510" class="s">batch never stops</text>
+
+  <rect x="470" y="460" width="410" height="70" rx="8" class="fault"/>
+  <text x="675" y="485" class="t">CheckpointManager.rollback()</text>
+  <text x="675" y="504" class="s">restore latest CP + replay journal, discard dirty row</text>
+  <text x="675" y="520" class="s">T006 → CP1 · T012 → CP2 · status ROLLED_BACK</text>
+
+  <path d="M1000 460h180v70h-180z" fill="#FFF8E5" stroke="#B9770E" stroke-width="1.5"/>
+  <ellipse cx="1090" cy="460" rx="90" ry="10" fill="#FFF8E5" stroke="#B9770E" stroke-width="1.5"/>
+  <text x="1090" y="492" class="t">Checkpoints</text>
+  <text x="1090" y="510" class="code">checkpoints/CP1–CP3.json</text>
+  <text x="1090" y="524" class="s">count, total, txn map</text>
+
+  <path d="M675 392V456" class="ln" marker-end="url(#a)"/>
+  <text x="683" y="430" class="lbl">no - retries exhausted (Database ×3)</text>
+  <path d="M1090 390V448" class="lng" marker-end="url(#g)"/>
+  <text x="1098" y="425" class="lg">yes: create CPn</text>
+  <path d="M998 495H884" class="lnb" marker-end="url(#b)"/>
+  <text x="900" y="487" class="lbl" style="fill:#2E5395">restore</text>
+  <path d="M470 495H204" class="ln" marker-end="url(#a)"/>
+  <path d="M110 460V124" class="ln" marker-end="url(#a)"/>
+  <path d="M1000 355H960V565H110V534" class="lng" marker-end="url(#g)"/>
+  <text x="560" y="559" class="lg">continue with next transaction</text>
+
+  <!-- logging bar -->
+  <rect x="20" y="588" width="1160" height="44" rx="8" fill="#F4F4F4" stroke="#999"/>
+  <text x="600" y="608" class="t" style="font-size:13px">Structured logging (every step): JsonLineFormatter → output/run_log.jsonl</text>
+  <text x="600" y="625" class="code">attempt_log_partC.csv · attempt_log_partD.csv · partB_exceptions.csv · results.json · tables.md</text>
+</svg>

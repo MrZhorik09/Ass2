@@ -1,0 +1,8 @@
+transaction,failure,exception,stage,recovery_action,final_status
+T002,Network,NetworkFault,Process,"Caught, classified, logged; transaction skipped; continue",FAILED
+T004,Timeout,TimeoutFault,Process,"Caught, classified, logged; transaction skipped; continue",FAILED
+T006,Database,DatabaseFault,Record,"Caught, classified, logged; transaction skipped; continue",FAILED
+T008,Network,NetworkFault,Process,"Caught, classified, logged; transaction skipped; continue",FAILED
+T010,Timeout,TimeoutFault,Process,"Caught, classified, logged; transaction skipped; continue",FAILED
+T012,Database,DatabaseFault,Record,"Caught, classified, logged; transaction skipped; continue",FAILED
+T015,Network,NetworkFault,Process,"Caught, classified, logged; transaction skipped; continue",FAILED
